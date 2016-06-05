@@ -43,6 +43,8 @@ public class GUIController implements Initializable {
         math_text.setText("");
     }
 
+    /* ############################## A2 - DRAWING BOXPLOTS ##############################  */
+
     public void drawBoxplot(ActionEvent actionEvent) {
         flushResetWindow();
 
@@ -123,6 +125,9 @@ public class GUIController implements Initializable {
         return res;
     }
 
+
+     /* ############################## A3 - CORRELATION ##############################  */
+
     public void drawCorrelation(ActionEvent actionEvent) {
         flushResetWindow();
 
@@ -146,7 +151,15 @@ public class GUIController implements Initializable {
         math_top.getChildren().add(scatterplot);
     }
 
-    /* ###### View Container Initializers ###### */
+     /* ############################## A4 - Confidence Interval ##############################  */
+     public void drawConfidence(ActionEvent actionEvent) {
+         flushResetWindow();
+
+         initializeConfidenceView();
+
+     }
+
+     /* ############################## View Container Initializers ##############################  */
 
     private void initializeBoxplotView() {
         boxplot_chart = new Canvas();
@@ -186,9 +199,13 @@ public class GUIController implements Initializable {
         scatterplot.setLayoutY(40);
     }
 
+    private void initializeConfidenceView() {
+
+    }
+
     /** Initializes all view variables **/
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        System.out.println("Initializing... ");
     }
 }
