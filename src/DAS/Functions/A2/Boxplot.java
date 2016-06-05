@@ -18,7 +18,7 @@ public class Boxplot {
     private ArrayList<Integer> sortedValues;
 
     public Boxplot (ArrayList<Integer> values) {
-        this.sortedValues = values;
+        this.sortedValues = new ArrayList<>(values);
         Collections.sort(sortedValues);
 
         this.minimum = sortedValues.get(0);

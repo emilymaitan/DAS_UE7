@@ -2,6 +2,7 @@ package DAS.View;
 
 import DAS.Data.Integers;
 import DAS.Functions.A2.Boxplot;
+import DAS.Functions.A3.Correlation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -125,8 +126,22 @@ public class GUIController implements Initializable {
     public void drawCorrelation(ActionEvent actionEvent) {
         flushResetWindow();
 
+        Correlation corr1 = new Correlation(Integers.getIntegers1());
+        Correlation corr2 = new Correlation(Integers.getIntegers2());
+        if (corr1.getValues().size() != corr2.getValues().size()) throw new IllegalArgumentException("Files must have same number of values!");
+
         initializeScatterplotView(new Boxplot(Integers.getIntegers1()), new Boxplot(Integers.getIntegers2()));
-        XYChart.Series<String, Number> data = new XYChart.Series<>();
+        XYChart.Series<Number, Number> data = new XYChart.Series<>();
+        data.setName("Correlation Data");
+
+        System.out.println("Values1: " + Integers.getIntegers1());
+
+        for (int i = 0; i < corr1.getValues().size(); i++) {
+            data.getData().add(new XYChart.Data<>(corr1.getValues().get(i),corr2.getValues().get(i)));
+            System.out.println("PAIR: @ " + i + " (" + corr1.getValues().get(i) + ", " + corr2.getValues().get(i) + ")");
+        }
+
+        scatterplot.getData().add(data);
 
         math_top.getChildren().add(scatterplot);
     }
@@ -150,18 +165,19 @@ public class GUIController implements Initializable {
     private void initializeScatterplotView (Boxplot data1, Boxplot data2) {
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Values_1");
+        xAxis.setLabel("File 1");
         xAxis.setAutoRanging(false);
-        xAxis.setLowerBound(Math.min(data1.getMinimum(),data2.getMinimum()));
-        xAxis.setUpperBound(Math.max(data1.getMaximum(),data2.getMaximum()));
+        xAxis.setLowerBound(Math.min(data1.getMinimum(),data2.getMinimum())-5);
+        xAxis.setUpperBound(Math.max(data1.getMaximum(),data2.getMaximum())+5);
 
-        yAxis.setLabel("Values_2");
+        yAxis.setLabel("File 2");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setLowerBound(Math.min(data1.getMinimum(),data2.getMinimum()));
-        yAxis.setUpperBound(Math.max(data1.getMaximum(),data2.getMaximum()));
+        yAxis.setLowerBound(Math.min(data1.getMinimum(),data2.getMinimum())-5);
+        yAxis.setUpperBound(Math.max(data1.getMaximum(),data2.getMaximum())+5);
 
-        scatterplot = new ScatterChart<Number, Number>(xAxis,yAxis);
+        scatterplot = new ScatterChart<>(xAxis,yAxis);
+        scatterplot.setTitle("Comparison of Values in Files 1 and 2");
         AnchorPane.setTopAnchor(scatterplot, 0.0);
         AnchorPane.setBottomAnchor(scatterplot, 0.0);
         AnchorPane.setLeftAnchor(scatterplot, 0.0);
