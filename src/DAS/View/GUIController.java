@@ -10,8 +10,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -25,10 +28,12 @@ public class GUIController implements Initializable {
     @FXML
     Canvas boxplot_chart;
 
-    final double BOXPLOT_ROOT_X = 20;   // bottom left
-    final double BOXPLOT_ROOT_Y = 40;   // bottom right
+    final double BOXPLOT_ROOT_X = 20;   // top left
+    final double BOXPLOT_ROOT_Y = 40;   // top right
     final double BOXPLOT_HEIGHT = 400;
     final double BOXPLOT_WIDTH = 800;
+
+    final double BOX_WIDTH = 100;       // with of a box in the boxplot
 
     @FXML
     ScatterChart<Number, Number> scatterplot;
@@ -43,6 +48,8 @@ public class GUIController implements Initializable {
 
         Boxplot box1 = new Boxplot(Integers.getIntegers1());
         Boxplot box2 = new Boxplot(Integers.getIntegers2());
+        double max = Math.max(box1.getMaximum(),box2.getMaximum());
+        double min = Math.min(box1.getMinimum(),box2.getMinimum());
 
         initializeBoxplotView();
 
@@ -51,11 +58,69 @@ public class GUIController implements Initializable {
         gc.strokeLine(BOXPLOT_ROOT_X+20,BOXPLOT_HEIGHT,BOXPLOT_WIDTH,BOXPLOT_HEIGHT);       // xAxis
         gc.strokeLine(BOXPLOT_ROOT_X+20,BOXPLOT_ROOT_Y,BOXPLOT_ROOT_X+20,BOXPLOT_HEIGHT);   // yAxis
 
-        gc.strokeText(String.valueOf(Math.min(box1.getMinimum(),box2.getMinimum())), BOXPLOT_ROOT_X,BOXPLOT_HEIGHT);
-        gc.strokeText(String.valueOf(Math.max(box1.getMaximum(),box2.getMaximum())), BOXPLOT_ROOT_X,BOXPLOT_ROOT_Y);
+        double box1_leftX = (BOXPLOT_WIDTH/4+20) - BOX_WIDTH/2;
+        double box2_leftX = (BOXPLOT_WIDTH/2+20 + BOXPLOT_WIDTH/4) - BOX_WIDTH/2;
+        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(max + min);
+
+        // Achsenbeschriftung
+        gc.strokeText(String.valueOf(max),BOXPLOT_ROOT_X,ty(unit,max));
+        gc.strokeText(String.valueOf(max/2),BOXPLOT_ROOT_X,ty(unit,max/2));
+        gc.strokeText(String.valueOf(max/4),BOXPLOT_ROOT_X,ty(unit,max/4));
+        gc.strokeText(String.valueOf(max/2+max/4),BOXPLOT_ROOT_X,ty(unit,max/2+max/4));
+        gc.strokeText(String.valueOf(min),BOXPLOT_ROOT_X,ty(unit,min));
+
+        gc.setStroke(Color.LIGHTBLUE);
+        gc.strokeLine(BOXPLOT_WIDTH/2+20,BOXPLOT_HEIGHT,BOXPLOT_WIDTH/2+20,BOXPLOT_ROOT_Y); // seperator
+
+        gc.setStroke(Color.BLUE);
+        strokeBoxplot(gc,unit,Integers.getIntegers1(),box1_leftX);
+        gc.setStroke(Color.RED);
+        strokeBoxplot(gc,unit,Integers.getIntegers2(),box2_leftX);
 
         math_top.getChildren().add(boxplot_chart);
         math_text.setText(box1.toString());
+    }
+
+    private void strokeBoxplot(GraphicsContext gc, double unit, ArrayList<Integer> values, double leftbound) {
+        Boxplot box = new Boxplot(values);
+        gc.strokeLine(leftbound,ty(unit, box.calcUpperBound()),leftbound+BOX_WIDTH,ty(unit, box.calcUpperBound()));   // upper
+        gc.strokeLine(leftbound,ty(unit, box.calcLowerBound()),leftbound+BOX_WIDTH,ty(unit, box.calcLowerBound()));   // lower
+        gc.strokeLine(leftbound+BOX_WIDTH/2,ty(unit, box.calcUpperBound()),leftbound+BOX_WIDTH/2,ty(unit, box.calcLowerBound()));
+        gc.strokeRect(leftbound,ty(unit,box.getQuartile75()),BOX_WIDTH,unit*(box.getQuartile75()-box.getQuartile25()));
+
+        if (box.calcUpperBound() != box.getMaximum()) {
+            values.stream().filter(i -> i > box.calcUpperBound()).forEach(i -> {
+                System.out.println("Outlier at " + i);
+                gc.strokeOval(leftbound + BOX_WIDTH / 2, ty(unit, i), 2, 2);
+            });
+        }
+    }
+
+    /**
+     * Translates a given value into the Y-value of the boxplot coordinate space.
+     * @param unit The conversion unit.
+     * @param originalY the value to be converted
+     * @return Y coordinate of the translated value
+     */
+    private double ty (double unit, double originalY) {
+        return BOXPLOT_HEIGHT-(unit*originalY);
+    }
+
+    /**
+     * Translates a given value into the X-value of the boxplot coordinate space.
+     * @param unit The conversion unit.
+     * @param originalX the value to be converted
+     * @return X coordinate of the translated value
+     */
+    private double tx (double unit, double originalX) {
+        return unit*originalX+20;
+    }
+
+    private double[] trc(double unit, double originalX, double originalY) {
+        double[] res = new double[2];
+        res[0] = unit*originalX+20;
+        res[1] = BOXPLOT_HEIGHT-(unit*originalY+20);
+        return res;
     }
 
     public void drawCorrelation(ActionEvent actionEvent) {
@@ -66,6 +131,8 @@ public class GUIController implements Initializable {
 
         math_top.getChildren().add(scatterplot);
     }
+
+    /* ###### View Container Initializers ###### */
 
     private void initializeBoxplotView() {
         boxplot_chart = new Canvas();

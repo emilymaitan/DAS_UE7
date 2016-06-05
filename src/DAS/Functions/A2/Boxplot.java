@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import static java.lang.Math.abs;
+
 /**
  * Created by Emily on 6/4/2016.
  */
@@ -33,6 +35,18 @@ public class Boxplot {
         } else {
             return (double) sortedValues.get((int)Math.ceil(k));
         }
+    }
+
+    // only works for positive values by now
+    public double calcUpperBound() {
+        double boxlength = quartile75-quartile25;
+        return Math.min(maximum,quartile75+(1.5*(boxlength)));
+    }
+
+    // only works for positive values by now
+    public double calcLowerBound() {
+        double boxlength = quartile75 - quartile25;
+        return Math.max(minimum,quartile25-(1.5*(boxlength)));
     }
 
     public Integer getMinimum() {
