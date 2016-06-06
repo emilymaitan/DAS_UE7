@@ -1,4 +1,4 @@
-package DAS.Functions.A2;
+package DAS.Logic.A2;
 
 import java.util.ArrayList;
 import java.util.Collections;

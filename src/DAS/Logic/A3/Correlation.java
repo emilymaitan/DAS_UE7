@@ -1,4 +1,4 @@
-package DAS.Functions.A3;
+package DAS.Logic.A3;
 
 import java.util.ArrayList;
 import java.util.Locale;

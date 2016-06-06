@@ -1,15 +1,14 @@
 package DAS.View;
 
 import DAS.Data.Integers;
-import DAS.Functions.A2.Boxplot;
-import DAS.Functions.A3.Correlation;
+import DAS.Logic.A2.Boxplot;
+import DAS.Logic.A3.Correlation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
@@ -23,24 +22,22 @@ public class GUIController implements Initializable {
     @FXML
     AnchorPane math_top;
     @FXML
-    TextArea math_text;
+    AnchorPane math_bot;
 
     @FXML
     Canvas boxplot_chart;
-
     final double BOXPLOT_ROOT_X = 20;   // top left
     final double BOXPLOT_ROOT_Y = 40;   // top right
     final double BOXPLOT_HEIGHT = 400;
     final double BOXPLOT_WIDTH = 800;
-
-    final double BOX_WIDTH = 100;       // with of a box in the boxplot
+    final double BOX_WIDTH = 100;       // witdh of a box in the boxplot
 
     @FXML
     ScatterChart<Number, Number> scatterplot;
 
     public void flushResetWindow() {
         while (math_top.getChildren().size() > 0) math_top.getChildren().remove(0);
-        math_text.setText("");
+        while (math_bot.getChildren().size() > 0) math_bot.getChildren().remove(0);
     }
 
     /* ############################## A2 - DRAWING BOXPLOTS ##############################  */
@@ -80,7 +77,7 @@ public class GUIController implements Initializable {
         strokeBoxplot(gc,unit,Integers.getIntegers2(),box2_leftX);
 
         math_top.getChildren().add(boxplot_chart);
-        math_text.setText(box1.toString());
+        //math_text.setText(box1.toString());
     }
 
     private void strokeBoxplot(GraphicsContext gc, double unit, ArrayList<Integer> values, double leftbound) {
@@ -143,10 +140,12 @@ public class GUIController implements Initializable {
 
         for (int i = 0; i < corr1.getValues().size(); i++) {
             data.getData().add(new XYChart.Data<>(corr1.getValues().get(i),corr2.getValues().get(i)));
-            System.out.println("PAIR: @ " + i + " (" + corr1.getValues().get(i) + ", " + corr2.getValues().get(i) + ")");
+            //System.out.println("PAIR: @ " + i + " (" + corr1.getValues().get(i) + ", " + corr2.getValues().get(i) + ")");
         }
 
         scatterplot.getData().add(data);
+
+        System.out.println("Correlation: " + Correlation.corrCoeff(corr1,corr2));
 
         math_top.getChildren().add(scatterplot);
     }
