@@ -5,7 +5,7 @@
 
 - [ ] A1 _- ... done, but GUI is subject to change_
 - [ ] A2 _- ... currently only works for positive values_
-- [ ] A3 _- ... done, only proper texutal view is missing_
+- [x] A3
 - [ ] A4
 - [ ] A5
 - [ ] A6
