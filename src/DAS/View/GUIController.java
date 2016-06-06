@@ -3,6 +3,7 @@ package DAS.View;
 import DAS.Data.Integers;
 import DAS.Logic.A2.Boxplot;
 import DAS.Logic.A3.Correlation;
+import DAS.Logic.A4.Confidence;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -188,6 +189,8 @@ public class GUIController implements Initializable {
      /* ############################## A4 - Confidence Interval ##############################  */
      public void drawConfidence(ActionEvent actionEvent) {
          flushResetWindow();
+
+         //System.out.println("T Value 19, 95%: " + Confidence.ttableLookup(19,.95));
 
          initializeConfidenceView();
 
