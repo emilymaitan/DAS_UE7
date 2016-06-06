@@ -153,8 +153,6 @@ public class GUIController implements Initializable {
         XYChart.Series<Number, Number> data = new XYChart.Series<>();
         data.setName("Correlation Data");
 
-        System.out.println("Values1: " + Integers.getIntegers1());
-
         for (int i = 0; i < corr1.getValues().size(); i++) {
             data.getData().add(new XYChart.Data<>(corr1.getValues().get(i),corr2.getValues().get(i)));
             //System.out.println("PAIR: @ " + i + " (" + corr1.getValues().get(i) + ", " + corr2.getValues().get(i) + ")");
@@ -162,9 +160,29 @@ public class GUIController implements Initializable {
 
         scatterplot.getData().add(data);
 
-        System.out.println("Correlation: " + Correlation.corrCoeff(corr1,corr2));
-
         math_top.getChildren().add(scatterplot);
+
+        // add text:
+        // add text to the plots
+        GridPane gridpane = new GridPane();
+        AnchorPane.setLeftAnchor(gridpane,0.0);
+        AnchorPane.setRightAnchor(gridpane,0.0);
+        AnchorPane.setTopAnchor(gridpane,0.0);
+        AnchorPane.setBottomAnchor(gridpane,0.0);
+        TextArea info1 = new TextArea("DATASET FILE 1: \n" + corr1.toString());
+        TextArea info2 = new TextArea("DATASET FILE 2: \n" + corr2.toString());
+        TextArea summary = new TextArea(
+                "CORRELATION INFO: \n" +
+                        "Correlation Coefficient: " + Correlation.corrCoeff(corr1,corr2) + "\n" +
+                        "Covariance: " + Correlation.covariance(corr1,corr2)
+        );
+        info1.setEditable(false);
+        info2.setEditable(false);
+        summary.setEditable(false);
+        gridpane.add(info1,0,0);
+        gridpane.add(info2,2,0);
+        gridpane.add(summary,1,0);
+        math_bot.getChildren().add(gridpane);
     }
 
      /* ############################## A4 - Confidence Interval ##############################  */
