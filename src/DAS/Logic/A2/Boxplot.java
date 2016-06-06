@@ -12,7 +12,7 @@ import static java.lang.Math.abs;
 public class Boxplot {
     private Integer minimum;
     private Double quartile25;
-    private Double quartile50;
+    private Double quartile50;  // = median
     private Double quartile75;
     private Integer maximum;
     private ArrayList<Integer> sortedValues;

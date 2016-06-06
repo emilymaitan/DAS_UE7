@@ -84,6 +84,7 @@ public class GUIController implements Initializable {
         Boxplot box = new Boxplot(values);
         gc.strokeLine(leftbound,ty(unit, box.calcUpperBound()),leftbound+BOX_WIDTH,ty(unit, box.calcUpperBound()));   // upper
         gc.strokeLine(leftbound,ty(unit, box.calcLowerBound()),leftbound+BOX_WIDTH,ty(unit, box.calcLowerBound()));   // lower
+        gc.strokeLine(leftbound,ty(unit, box.getQuartile50()), leftbound+BOX_WIDTH,ty(unit, box.getQuartile50()));
         gc.strokeLine(leftbound+BOX_WIDTH/2,ty(unit, box.calcUpperBound()),leftbound+BOX_WIDTH/2,ty(unit, box.calcLowerBound()));
         gc.strokeRect(leftbound,ty(unit,box.getQuartile75()),BOX_WIDTH,unit*(box.getQuartile75()-box.getQuartile25()));
 
