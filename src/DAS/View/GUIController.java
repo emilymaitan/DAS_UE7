@@ -9,7 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -78,6 +80,20 @@ public class GUIController implements Initializable {
 
         math_top.getChildren().add(boxplot_chart);
         //math_text.setText(box1.toString());
+
+        // add text to the plots
+        GridPane gridpane = new GridPane();
+        AnchorPane.setLeftAnchor(gridpane,0.0);
+        AnchorPane.setRightAnchor(gridpane,0.0);
+        AnchorPane.setTopAnchor(gridpane,0.0);
+        AnchorPane.setBottomAnchor(gridpane,0.0);
+        TextArea info1 = new TextArea(box1.toString());
+        TextArea info2 = new TextArea(box2.toString());
+        info1.setEditable(false);
+        info2.setEditable(false);
+        gridpane.add(info1,0,0);
+        gridpane.add(info2,1,0);
+        math_bot.getChildren().add(gridpane);
     }
 
     private void strokeBoxplot(GraphicsContext gc, double unit, ArrayList<Integer> values, double leftbound) {
