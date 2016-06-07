@@ -190,7 +190,7 @@ public class GUIController implements Initializable {
      public void drawConfidence(ActionEvent actionEvent) {
          flushResetWindow();
 
-         //System.out.println("T Value 19, 95%: " + Confidence.ttableLookup(19,.95));
+
 
          initializeConfidenceView();
 
