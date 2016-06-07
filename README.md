@@ -3,12 +3,12 @@
 
 ## PROGRESS ##
 
-- [ ] A1 _- ... done, but GUI is subject to change_
+- [x] A1 _- I've come so far with JAVAFX... I won't change now._
 - [ ] A2 _- ... currently only works for positive values_
 - [x] A3
 - [x] A4
-- [ ] A5
-- [ ] A6
+- [ ] A5 _- I don't know WHAT to do here! I won't ever finish it._
+- [ ] A6 _- ... currently only works for positive values_
 
 ## Aufgabe 1 
 Erstellen Sie ein Programm (beliebige prozedurale Programmiersprache), welches zwei Textdateien 
