@@ -4,6 +4,7 @@ import DAS.Data.Integers;
 import DAS.Logic.A2.Boxplot;
 import DAS.Logic.A3.Correlation;
 import DAS.Logic.A4.Confidence;
+import DAS.Logic.A6.Differences;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -209,6 +210,33 @@ public class GUIController implements Initializable {
                         "Span: " + (bounds2[1]-bounds2[0]) + "\n" +
                         "Sample Mean: " + Integers.getIntegers2().stream().mapToDouble(Integer::intValue).sum()/Integers.getIntegers2().size()
         );
+    }
+
+    /* ############################## A6 - DIFFERENCES & BOXPLOTS ##############################  */
+    public void drawDifferences(ActionEvent actionEvent) {
+        flushResetWindow();
+        initializeBoxplotView();
+        ArrayList<Integer> values = Differences.calcDifferences(
+          Integers.getIntegers1(),Integers.getIntegers2()
+        );
+        Boxplot boxplot = new Boxplot(values);
+
+        GraphicsContext gc = boxplot_chart.getGraphicsContext2D();
+        gc.strokeLine(BOXPLOT_ROOT_X+20,BOXPLOT_HEIGHT,BOXPLOT_WIDTH,BOXPLOT_HEIGHT);       // xAxis
+        gc.strokeLine(BOXPLOT_ROOT_X+20,BOXPLOT_ROOT_Y,BOXPLOT_ROOT_X+20,BOXPLOT_HEIGHT);   // yAxis
+
+        double box_leftX = (BOXPLOT_WIDTH/2+20) - BOX_WIDTH/2;
+        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(boxplot.getMaximum() + boxplot.getMinimum());
+        strokeBoxplot(gc,unit,values,box_leftX);
+
+        // Achsenbeschriftung
+        gc.strokeText(String.valueOf(boxplot.getMaximum()),BOXPLOT_ROOT_X,ty(unit,boxplot.getMaximum()));
+        gc.strokeText(String.valueOf(boxplot.getMaximum()/2),BOXPLOT_ROOT_X,ty(unit,boxplot.getMaximum()/2));
+        gc.strokeText(String.valueOf(boxplot.getMaximum()/4),BOXPLOT_ROOT_X,ty(unit,boxplot.getMaximum()/4));
+        gc.strokeText(String.valueOf(boxplot.getMaximum()/2+boxplot.getMaximum()/4),BOXPLOT_ROOT_X,ty(unit,boxplot.getMaximum()/2+boxplot.getMaximum()/4));
+        gc.strokeText(String.valueOf(boxplot.getMinimum()),BOXPLOT_ROOT_X,ty(unit,boxplot.getMinimum()));
+
+        math_top.getChildren().add(boxplot_chart);
     }
 
      /* ############################## View Container Initializers ##############################  */
