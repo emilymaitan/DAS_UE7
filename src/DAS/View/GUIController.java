@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
@@ -16,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -185,11 +187,28 @@ public class GUIController implements Initializable {
      }
 
     private void updateConfidence(double level) {
-        System.out.println("Update: " + level);
-        // prepare text fields
-        String[] text = {
-                "hello"
-        };
+        TextArea left = null, right = null;
+        GridPane gridpane = (GridPane)math_top.getChildren().get(1); // I know this
+        left = (TextArea) gridpane.getChildren().get(0);
+        right = (TextArea) gridpane.getChildren().get(1);
+
+        Double[] bounds1 = Confidence.calcBounds(Integers.getIntegers1(),level);
+        Double[] bounds2 = Confidence.calcBounds(Integers.getIntegers2(),level);
+
+        left.setText(
+                "DATASET FILE 1: \n" +
+                "Lower Bound: " + bounds1[0] + "\n" +
+                "Upper Bound: " + bounds1[1] + "\n \n" +
+                        "Span: " + (bounds1[1]-bounds1[0]) + "\n" +
+                        "Sample Mean: " + Integers.getIntegers1().stream().mapToDouble(Integer::intValue).sum()/Integers.getIntegers1().size()
+        );
+        right.setText(
+                "DATASET FILE 2: \n" +
+                        "Lower Bound: " + bounds2[0] + "\n" +
+                        "Upper Bound: " + bounds2[1] + "\n \n" +
+                        "Span: " + (bounds2[1]-bounds2[0]) + "\n" +
+                        "Sample Mean: " + Integers.getIntegers2().stream().mapToDouble(Integer::intValue).sum()/Integers.getIntegers2().size()
+        );
     }
 
      /* ############################## View Container Initializers ##############################  */
@@ -273,12 +292,14 @@ public class GUIController implements Initializable {
         });
 
         math_top.getChildren().add(0,levels);
-/*
+
+
         GridPane gridpane = new GridPane();
-        AnchorPane.setLeftAnchor(levels,0.0);
-        AnchorPane.setRightAnchor(levels,0.0);
-        AnchorPane.setTopAnchor(levels,80.0);
+        AnchorPane.setLeftAnchor(gridpane,0.0);
+        AnchorPane.setRightAnchor(gridpane,0.0);
+        AnchorPane.setTopAnchor(gridpane,80.0);
         AnchorPane.setBottomAnchor(gridpane, 0.0);
+        gridpane.setPrefWidth(Double.MAX_VALUE);
         TextArea left = new TextArea("Please select a level...");
         TextArea right = new TextArea("Please select a level...");
         left.setEditable(false);
@@ -288,7 +309,7 @@ public class GUIController implements Initializable {
         left.setId("conf_left");
         right.setId("conf_right");
 
-        //math_top.getChildren().add(1,gridpane);*/
+        math_top.getChildren().add(1,gridpane);
     }
 
     /** Initializes all view variables **/
