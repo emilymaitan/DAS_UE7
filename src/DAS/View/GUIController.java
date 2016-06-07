@@ -4,13 +4,15 @@ import DAS.Data.Integers;
 import DAS.Logic.A2.Boxplot;
 import DAS.Logic.A3.Correlation;
 import DAS.Logic.A4.Confidence;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -37,6 +39,8 @@ public class GUIController implements Initializable {
 
     @FXML
     ScatterChart<Number, Number> scatterplot;
+
+    /* ############################## CLEAN EVERYTHING ##############################  */
 
     public void flushResetWindow() {
         while (math_top.getChildren().size() > 0) math_top.getChildren().remove(0);
@@ -165,38 +169,45 @@ public class GUIController implements Initializable {
 
         // add text:
         // add text to the plots
-        GridPane gridpane = new GridPane();
-        AnchorPane.setLeftAnchor(gridpane,0.0);
-        AnchorPane.setRightAnchor(gridpane,0.0);
-        AnchorPane.setTopAnchor(gridpane,0.0);
-        AnchorPane.setBottomAnchor(gridpane,0.0);
-        TextArea info1 = new TextArea("DATASET FILE 1: \n" + corr1.toString());
-        TextArea info2 = new TextArea("DATASET FILE 2: \n" + corr2.toString());
-        TextArea summary = new TextArea(
+        String[] text = {
+                "DATASET FILE 1: \n" + corr1.toString(),
                 "CORRELATION INFO: \n" +
                         "Correlation Coefficient: " + Correlation.corrCoeff(corr1,corr2) + "\n" +
-                        "Covariance: " + Correlation.covariance(corr1,corr2)
-        );
-        info1.setEditable(false);
-        info2.setEditable(false);
-        summary.setEditable(false);
-        gridpane.add(info1,0,0);
-        gridpane.add(info2,2,0);
-        gridpane.add(summary,1,0);
-        math_bot.getChildren().add(gridpane);
+                        "Covariance: " + Correlation.covariance(corr1,corr2),
+                "DATASET FILE 2: \n" + corr2.toString()};
+        drawTextCols(math_bot,text);
     }
 
      /* ############################## A4 - Confidence Interval ##############################  */
      public void drawConfidence(ActionEvent actionEvent) {
          flushResetWindow();
-
-
-
          initializeConfidenceView();
-
      }
 
+    private void updateConfidence(double level) {
+        System.out.println("Update: " + level);
+        // prepare text fields
+        String[] text = {
+                "hello"
+        };
+    }
+
      /* ############################## View Container Initializers ##############################  */
+
+    private void drawTextCols(AnchorPane parent, String[] text) {
+        GridPane gridpane = new GridPane();
+        AnchorPane.setLeftAnchor(gridpane,0.0);
+        AnchorPane.setRightAnchor(gridpane,0.0);
+        AnchorPane.setTopAnchor(gridpane,0.0);
+        AnchorPane.setBottomAnchor(gridpane,0.0);
+
+        for (int i = 0; i < text.length; i++) {
+            TextArea ta = new TextArea(text[i]);
+            ta.setEditable(false);
+            gridpane.add(ta, i, 0);
+        }
+        parent.getChildren().add(gridpane);
+    }
 
     private void initializeBoxplotView() {
         boxplot_chart = new Canvas();
@@ -237,7 +248,47 @@ public class GUIController implements Initializable {
     }
 
     private void initializeConfidenceView() {
+        ToolBar levels = new ToolBar();
+        levels.setPrefWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(levels,0.0);
+        AnchorPane.setRightAnchor(levels,0.0);
+        AnchorPane.setTopAnchor(levels,0.0);
+        AnchorPane.setBottomAnchor(levels,420.0);
 
+        final ToggleGroup lv = new ToggleGroup();
+
+        double[] alphas = {80,90,95,97.5,99};
+        for (double a : alphas) {
+            RadioButton rb = new RadioButton(String.valueOf(a) + "%");
+            rb.setUserData(a/100.0);
+            rb.setToggleGroup(lv);
+            levels.getItems().add(rb);
+        }
+
+        lv.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                updateConfidence((double)newValue.getUserData());
+            }
+        });
+
+        math_top.getChildren().add(0,levels);
+/*
+        GridPane gridpane = new GridPane();
+        AnchorPane.setLeftAnchor(levels,0.0);
+        AnchorPane.setRightAnchor(levels,0.0);
+        AnchorPane.setTopAnchor(levels,80.0);
+        AnchorPane.setBottomAnchor(gridpane, 0.0);
+        TextArea left = new TextArea("Please select a level...");
+        TextArea right = new TextArea("Please select a level...");
+        left.setEditable(false);
+        right.setEditable(false);
+        gridpane.add(left,0,0);
+        gridpane.add(right,1,0);
+        left.setId("conf_left");
+        right.setId("conf_right");
+
+        //math_top.getChildren().add(1,gridpane);*/
     }
 
     /** Initializes all view variables **/
