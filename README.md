@@ -6,7 +6,7 @@
 - [ ] A1 _- ... done, but GUI is subject to change_
 - [ ] A2 _- ... currently only works for positive values_
 - [x] A3
-- [ ] A4
+- [x] A4
 - [ ] A5
 - [ ] A6
 
