@@ -43,6 +43,10 @@ public class GUIController implements Initializable {
     @FXML
     ScatterChart<Number, Number> scatterplot;
 
+    @FXML
+    BarChart<String,Number> diffchart_1;
+    BarChart<String,Number> diffchart_2;
+
     /* ############################## CLEAN EVERYTHING ##############################  */
 
     public void flushResetWindow() {
@@ -212,6 +216,19 @@ public class GUIController implements Initializable {
         );
     }
 
+    /* ############################## A5 - DIFFERENCES & BARCHARTS ##############################  */
+    public void drawBarcharts() {
+        flushResetWindow();
+        initializeBarchartView();
+
+        XYChart.Series<String, Number> data1 = new XYChart.Series<>();
+        XYChart.Series<String, Number> data2 = new XYChart.Series<>();
+        data1.setName("File 1");
+        data2.setName("File 2");
+
+
+    }
+
     /* ############################## A6 - DIFFERENCES & BOXPLOTS ##############################  */
     public void drawDifferences(ActionEvent actionEvent) {
         flushResetWindow();
@@ -338,6 +355,32 @@ public class GUIController implements Initializable {
         right.setId("conf_right");
 
         math_top.getChildren().add(1,gridpane);
+    }
+
+    private void initializeBarchartView() {
+        GridPane gridpane = new GridPane();
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Bins");
+        yAxis.setLabel("Values");
+
+        CategoryAxis xAxis2 = new CategoryAxis();
+        NumberAxis yAxis2 = new NumberAxis();
+        xAxis2.setLabel("Bins");
+        yAxis2.setLabel("Values");
+
+        diffchart_1 = new BarChart<String, Number>(xAxis, yAxis);
+        diffchart_2 = new BarChart<String, Number>(xAxis2, yAxis2);
+
+        gridpane.add(diffchart_1,0,0);
+        gridpane.add(diffchart_2,1,0);
+
+        AnchorPane.setTopAnchor(gridpane, 0.0);
+        AnchorPane.setBottomAnchor(gridpane, 0.0);
+        AnchorPane.setLeftAnchor(gridpane, 0.0);
+        AnchorPane.setRightAnchor(gridpane, 0.0);
+
+        math_top.getChildren().add(gridpane);
     }
 
     /** Initializes all view variables **/
