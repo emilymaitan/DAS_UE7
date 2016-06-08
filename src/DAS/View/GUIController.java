@@ -73,7 +73,7 @@ public class GUIController implements Initializable {
 
         double box1_leftX = (BOXPLOT_WIDTH/4+20) - BOX_WIDTH/2;
         double box2_leftX = (BOXPLOT_WIDTH/2+20 + BOXPLOT_WIDTH/4) - BOX_WIDTH/2;
-        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(max + min);
+        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(Math.abs(max) + Math.abs(min));
 
         // Achsenbeschriftung
         gc.strokeText(String.valueOf(max),BOXPLOT_ROOT_X,ty(unit,max));
@@ -243,7 +243,7 @@ public class GUIController implements Initializable {
         gc.strokeLine(BOXPLOT_ROOT_X+20,BOXPLOT_ROOT_Y,BOXPLOT_ROOT_X+20,BOXPLOT_HEIGHT);   // yAxis
 
         double box_leftX = (BOXPLOT_WIDTH/2+20) - BOX_WIDTH/2;
-        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(boxplot.getMaximum() + boxplot.getMinimum());
+        double unit = (BOXPLOT_HEIGHT-BOXPLOT_ROOT_Y)/(Math.abs(boxplot.getMaximum()) + Math.abs(boxplot.getMinimum()));
         strokeBoxplot(gc,unit,values,box_leftX);
 
         // Achsenbeschriftung
