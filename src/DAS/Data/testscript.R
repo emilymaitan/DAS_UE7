@@ -19,3 +19,7 @@ print("### Unit Testing ###")
 neg <- c(-1,-10,-5,10,-50)
 print(basicStats(neg))
 boxplot(neg)
+
+test <- c(1,5,10,20,100,0)
+print(basicStats(neg))
+boxplot(neg)
