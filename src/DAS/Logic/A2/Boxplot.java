@@ -33,7 +33,7 @@ public class Boxplot {
         if (Math.floor(k) == k) {       // if the number is whole
             return 0.5*(sortedValues.get((int)k-1) + sortedValues.get((int)k)); // array starts with zero
         } else {
-            return (double) sortedValues.get((int)Math.ceil(k));
+            return (double) sortedValues.get((int)Math.ceil(k)-1);
         }
     }
 
