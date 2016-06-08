@@ -15,3 +15,7 @@ abline(lsfit(values1, values2), col="blue", lwd=2)
 title(main="Linearer Trend?")
 print(paste("Korrelationskoeffizient: ",cor(values1,values2)))
 
+print("### Unit Testing ###")
+neg <- c(-1,-10,-5,10,-50)
+print(basicStats(neg))
+boxplot(neg)
