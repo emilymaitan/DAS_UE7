@@ -23,8 +23,8 @@ Datensätze ausgibt.
 **(2p)**
 
 ## Aufgabe  3 
-Schreiben  Sie  eine  Funktion  für  das  Programm  aus  Aufgabe  1,  welches  die  Datensätze  auf  linea- 
-ren  Zusammenhang  Untersucht  und  das  Ergebnis  in  Form  einer  Graﬁk  inklusive  der  Zahlenwerte 
+Schreiben  Sie  eine  Funktion  für  das  Programm  aus  Aufgabe  1,  welches  die  Datensätze  auf  linearen  
+Zusammenhang  Untersucht  und  das  Ergebnis  in  Form  einer  Graﬁk  inklusive  der  Zahlenwerte 
 ausgibt. 
 **(2p)**
 
