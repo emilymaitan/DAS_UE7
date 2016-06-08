@@ -30,7 +30,10 @@ public class BoxplotTest {
         assertEquals(10,boxneg.calcUpperBound(),0);
 
         Boxplot boxmix = new Boxplot(mixed);
-        assertEquals(1,boxmix.calcUpperBound(),0);
+        assertEquals(30,boxmix.calcUpperBound(),0);
+
+        Boxplot differences = new Boxplot(new ArrayList<>(Arrays.asList(-18,-48,-94,-10,10,99,7,1,-32,10,0,-58,-41,-49,-16,3,-31,-37,-18,-9)));
+        assertEquals(differences.getQuartile75()+1.5*(differences.getQuartile75()-differences.getQuartile25()),differences.calcUpperBound(),0.5);
     }
 
     @Test
@@ -39,7 +42,10 @@ public class BoxplotTest {
         assertEquals(0, boxplot.calcLowerBound(),0);
 
         Boxplot boxmix = new Boxplot(mixed);
-        assertEquals(-100,boxmix.calcUpperBound(),0);
+        assertEquals(-100,boxmix.calcLowerBound(),0);
+
+        Boxplot differences = new Boxplot(new ArrayList<>(Arrays.asList(-18,-48,-94,-10,10,99,7,1,-32,10,0,-58,-41,-49,-16,3,-31,-37,-18,-9)));
+        assertEquals(-94,differences.calcLowerBound(),0);
     }
 
     @Test
@@ -70,6 +76,9 @@ public class BoxplotTest {
 
         Boxplot boxneg = new Boxplot(neg);
         assertEquals(-5,boxneg.getQuartile50(),0.01);
+
+        Boxplot boxmix = new Boxplot(mixed);
+        assertEquals(-50,boxmix.getQuartile50(),0);
     }
 
     @Test
@@ -79,6 +88,9 @@ public class BoxplotTest {
 
         Boxplot boxneg = new Boxplot(neg);
         assertEquals(-1,boxneg.getQuartile75(),0);
+
+        Boxplot boxmix = new Boxplot(mixed);
+        assertEquals(1,boxmix.getQuartile75(),0);
     }
 
     @Test

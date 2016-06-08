@@ -11,8 +11,8 @@ public class Differences {
 
         ArrayList<Integer> res = new ArrayList<>(set1.size());
         for (int i = 0; i < set1.size(); i++) {
-            res.add(i,Math.abs(set1.get(i)-set2.get(i)));
-            //res.add(i,(set1.get(i)-set2.get(i)));
+            //res.add(i,Math.abs(set1.get(i)-set2.get(i)));
+            res.add(i,(set1.get(i)-set2.get(i)));
         }
         return res;
     }
