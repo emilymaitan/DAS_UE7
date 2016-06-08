@@ -4,11 +4,11 @@
 ## PROGRESS ##
 
 - [x] A1 _- I've come so far with JAVAFX... I won't change now._
-- [ ] A2 _- ... currently only works for positive values_
+- [x] A2
 - [x] A3
 - [x] A4
 - [ ] A5 _- I don't know WHAT to do here! I won't ever finish it._
-- [ ] A6 _- ... currently only works for positive values_
+- [x] A6 _- display for non-absolute data is still a little weird_
 
 ## Aufgabe 1 
 Erstellen Sie ein Programm (beliebige prozedurale Programmiersprache), welches zwei Textdateien 
